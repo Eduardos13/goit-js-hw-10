@@ -40,6 +40,20 @@
 
   border: 1px solid #808080;
   border-radius: 4px;
+
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 1.50;
+  letter-spacing: 0.04em;
+  color: #2e2f42;
+}
+
+#datetime-picker:hover {
+  border: 1px solid #000000;
+}
+
+.disabled-input {
+  color: #808080;
 }
 
 [type="button"] {
@@ -51,12 +65,25 @@
   font-size: 16px;
   line-height: 1.50;
   letter-spacing: 0.04em;
-  color: #989898;
+  color: #ffffff;
+  background-color: #4e75ff;
 
   border: none;
   border-radius: 8px;
 
   margin-left: 8px;
+}
+
+[type="button"]:hover {
+  background-color: #6c8cff;
+}
+
+
+.disable-btn,
+.disable-btn:hover  {
+  background-color: #cfcfcf;
+  color: #989898;
+  /* cursor: no-drop; */
 }
 
 .timer {
