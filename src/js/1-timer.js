@@ -21,7 +21,6 @@ const options = {   // задаю налаштування пікеру, так�
       }
       userSelectedDate = selectedDates[0]; // присвоюю обрану валідну дату змінній
       startBtn.classList.remove("disable-btn"); // роблю кнопку активною
-
     }
 }
 
@@ -34,6 +33,10 @@ const handleClick = () => {
     function convertMs() {
 
         const ms = userSelectedDate.getTime() - Date.now();
+
+        if(ms <= 0) {
+            clearInterval(intervalId);
+        }
 
         // Number of milliseconds per unit of time
         const second = 1000;
@@ -61,7 +64,6 @@ const handleClick = () => {
       startBtn.classList.add("disable-btn");
       input.disabled = true;
       input.classList.add("disabled-input");
-      
 }
 
 startBtn.addEventListener("click", handleClick);
