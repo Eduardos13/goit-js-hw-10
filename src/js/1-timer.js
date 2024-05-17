@@ -1,6 +1,9 @@
 import flatpickr from "flatpickr";
 import "flatpickr/dist/flatpickr.min.css";
 
+import iziToast from "izitoast";
+import "izitoast/dist/css/iziToast.min.css";
+
 const input = document.querySelector("#datetime-picker"); // отримую інпут\
 const startBtn = document.querySelector("button");
 
@@ -17,14 +20,16 @@ const options = {   // задаю налаштування пікеру, так�
       if(selectedDates[0].getTime() < Date.now()) { // перевіряю що дата не раніше моменту зараз
         startBtn.classList.add("disable-btn"); // роблю кнопку не актівною якщо дата раніше ніж зараз
         startBtn.disabled = true;
-        return alert ("Please choose a date in the future"); // виводжу повідомлення про вибір дати в майбутньому
+        return iziToast.show({
+          title: "",
+          message: "Please choose a date in the future"
+      }); // виводжу повідомлення про вибір дати в майбутньому
       }
       userSelectedDate = selectedDates[0]; // присвоюю обрану валідну дату змінній
       startBtn.classList.remove("disable-btn"); // роблю кнопку активною
+      startBtn.disabled = false;
     }
 }
-
-const fp = flatpickr("#datetime-picker", options);  // ініціалізую бібліотеку
 
 const handleClick = () => {
 
@@ -33,10 +38,6 @@ const handleClick = () => {
     function convertMs() {
 
         const ms = userSelectedDate.getTime() - Date.now();
-
-        if(ms <= 0) {
-            clearInterval(intervalId);
-        }
 
         // Number of milliseconds per unit of time
         const second = 1000;
@@ -53,10 +54,24 @@ const handleClick = () => {
         // Remaining seconds
         const seconds = Math.floor((((ms % day) % hour) % minute) / second);
 
-        const timeValue = document.querySelector(".value");
-        timeValue.dataset.days = days;
+        const updatedTimeValue = (dataAttribute, newValue) => {  // функція для відмалювання компонентів в інтерфейс таймера
 
-        console.log({ days, hours, minutes, seconds }); // прибрать
+          const timeValue = document.querySelector(`.value[data-${dataAttribute}]`);
+
+          if(timeValue) {
+            timeValue.textContent = newValue;
+          }
+        }
+
+        updatedTimeValue('days', days.toString().padStart(2, '0'));
+        updatedTimeValue('hours', hours.toString().padStart(2, '0'));
+        updatedTimeValue('minutes', minutes.toString().padStart(2, '0'));
+        updatedTimeValue('seconds', seconds.toString().padStart(2, '0'));
+
+        if(ms <= 0) {
+          clearInterval(intervalId);
+        }
+
         return { days, hours, minutes, seconds };
       }
 
@@ -66,9 +81,6 @@ const handleClick = () => {
       input.classList.add("disabled-input");
 }
 
+const fp = flatpickr("#datetime-picker", options);  // ініціалізую бібліотеку
+
 startBtn.addEventListener("click", handleClick);
-
-
-
-
-
