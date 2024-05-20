@@ -35,9 +35,16 @@ const handleClick = () => {
 
     const intervalId = setInterval(convertMs, 1000);
 
+
+
     function convertMs() {
 
         const ms = userSelectedDate.getTime() - Date.now();
+
+        // if(ms < 0) {
+        //   clearInterval(intervalId);
+        //   console.log("STOP");
+        // }
 
         // Number of milliseconds per unit of time
         const second = 1000;
@@ -68,8 +75,13 @@ const handleClick = () => {
         updatedTimeValue('minutes', minutes.toString().padStart(2, '0'));
         updatedTimeValue('seconds', seconds.toString().padStart(2, '0'));
 
-        if(ms <= 0) {
+        if(ms < 1000) {
           clearInterval(intervalId);
+
+          startBtn.disabled = false;
+          startBtn.classList.remove("disable-btn");
+          input.disabled = false;
+          input.classList.remove("disabled-input");
         }
 
         return { days, hours, minutes, seconds };
